@@ -5,7 +5,8 @@ import {Avatar} from 'antd';
 // import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css';
 
-const CreatePostForm = ({content, setContent, postSubmit, handleImage, uploading, image}) => {
+
+const PostForm = ({content, setContent, postSubmit, handleImage, uploading, image}) => {
 
     return (
         <div className="card">
@@ -32,4 +33,4 @@ const CreatePostForm = ({content, setContent, postSubmit, handleImage, uploading
     )
 }
 
-export default CreatePostForm;
+export default PostForm;
