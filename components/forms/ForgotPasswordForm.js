@@ -1,13 +1,11 @@
 import { SyncOutlined } from "@ant-design/icons";
 
-const AuthForm = ({
+const ForgotPasswordForm = ({
   handleSubmit,
-  name,
-  setName,
   email,
   setEmail,
-  password,
-  setPassword,
+  newPassword,
+  setNewPassword,
   secret,
   setSecret,
   loading,
@@ -16,20 +14,6 @@ const AuthForm = ({
   return (
     <>
       <form onSubmit={handleSubmit}>
-        {page !== "login" && (
-          <div className="form-group p-2">
-            <small>
-              <label className="text-muted">Your Name</label>
-            </small>
-            <input
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              type="text"
-              className="form-control"
-              placeholder="Enter name"
-            />
-          </div>
-        )}
         <div className="form-group p-2">
           <small>
             <label className="text-muted">Email Address</label>
@@ -44,17 +28,16 @@ const AuthForm = ({
         </div>
         <div className="form-group p-2">
           <small>
-            <label className="text-muted">Password</label>
+            <label className="text-muted">New Password</label>
           </small>
           <input
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
             type="password"
             className="form-control"
-            placeholder="Enter password"
+            placeholder="Enter new password"
           />
         </div>
-        {page !== "login" && (
           <>
             <div className="form-group p-2">
               <small>
@@ -79,13 +62,9 @@ const AuthForm = ({
               />
             </div>
           </>
-        )}
         <div className="form-group p-2">
           <button
-            disabled={
-              page !== "login"
-                ? !name || !email || !secret || !password || loading
-                : !email || !password || loading
+            disabled={ !email || !newPassword || !secret || loading
             }
             className="btn btn-primary col-12"
           >
@@ -97,4 +76,4 @@ const AuthForm = ({
   );
 };
 
-export default AuthForm;
+export default ForgotPasswordForm;
