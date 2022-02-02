@@ -29,7 +29,7 @@ const Home = () => {
   const fetchUserPosts = async () => {
     try {
       const { data } = await axios.get("/user-posts");
-      // console.log('user posts => ', data)
+      console.log('user posts => ', data)
       setPosts(data);
     } catch (err) {
       console.log(err);
