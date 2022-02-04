@@ -6,6 +6,8 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import { toast } from "react-toastify";
 import PostList from "../../components/cards/PostList";
+import People from "../../components/cards/People";
+import Link from "next/link";
 
 const Home = () => {
   // this will give you access to the global state set in UserContext.
@@ -19,18 +21,33 @@ const Home = () => {
   // posts state
   const [posts, setPosts] = useState([]);
 
+  // people state
+  const [people, setPeople] = useState([]);
+
   // router
   const router = useRouter();
 
   useEffect(() => {
-    if (state && state.token) fetchUserPosts();
+    if (state && state.token) {
+      newsFeed();
+      findPeople();
+    }
   }, [state && state.token]);
 
-  const fetchUserPosts = async () => {
+  const newsFeed = async () => {
     try {
-      const { data } = await axios.get("/user-posts");
-      console.log('user posts => ', data)
+      const { data } = await axios.get("/news-feed");
+      // console.log("user posts => ", data);
       setPosts(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const findPeople = async () => {
+    try {
+      const { data } = await axios.get("/find-people");
+      setPeople(data);
     } catch (err) {
       console.log(err);
     }
@@ -45,7 +62,7 @@ const Home = () => {
       if (data.error) {
         toast.error(data.error);
       } else {
-        fetchUserPosts();
+        newsFeed();
         toast.success("Post created");
         setContent("");
         setImage({});
@@ -77,17 +94,63 @@ const Home = () => {
 
   const handleDelete = async (post) => {
     try {
-      const answer = window.confirm('Are you sure you want to delete this post?')
-      if(!answer) return;
+      const answer = window.confirm(
+        "Are you sure you want to delete this post?"
+      );
+      if (!answer) return;
       setDeleting(true);
-      const {data} = await axios.delete(`/delete-post/${post._id}`);
-      toast.error('Post Deleted');
-      fetchUserPosts();
+      const { data } = await axios.delete(`/delete-post/${post._id}`);
+      toast.error("Post Deleted");
+      newsFeed();
       setDeleting(false);
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
-  }
+  };
+
+  const handleFollow = async (user) => {
+    // console.log("add this user to the following list", user);
+    try {
+      const { data } = await axios.put("/user-follow", { _id: user._id });
+      // console.log("handle follow response ", data);
+      // update local storage, update user, keep token
+      let auth = JSON.parse(localStorage.getItem("auth"));
+      auth.user = data;
+      localStorage.setItem("auth", JSON.stringify(auth));
+      // update context
+      setState({ ...state, user: data });
+      // update people state
+      let filtered = people.filter((person) => person._id !== user._id);
+      setPeople(filtered);
+      newsFeed();
+      // rerender the post in newsfeed
+      toast.success(`Following ${user.name}`);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleLike = async (_id) => {
+    // console.log("like this post =>", _id);
+    try {
+      const { data } = await axios.put("/like-post", { _id });
+      // console.log("liked ", data);
+      newsFeed();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleUnlike = async (_id) => {
+    // console.log("unlike this post =>", _id);
+    const { data } = await axios.put("/unlike-post", { _id });
+    // console.log("unliked ", data);
+    newsFeed();
+    try {
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <UserRoute>
@@ -106,12 +169,24 @@ const Home = () => {
               handleImage={handleImage}
               uploading={uploading}
               image={image}
-              
             />
-            <br />  
-            <PostList posts={posts} handleDelete={handleDelete} deleting={deleting}/>
+            <br />
+            <PostList
+              posts={posts}
+              handleDelete={handleDelete}
+              deleting={deleting}
+              handleLike={handleLike}
+              handleUnlike={handleUnlike}
+            />
           </div>
-          <div className="col-md-4">Sidebar</div>
+          <div className="col-md-4">
+            {state && state.user && state.user.following && (
+              <Link href={`/user/following`}>
+                <a className="h6">{state.user.following.length} Following</a>
+              </Link>
+            )}
+            <People people={people} handleFollow={handleFollow} />
+          </div>
         </div>
       </div>
     </UserRoute>

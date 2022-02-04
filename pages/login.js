@@ -15,37 +15,31 @@ const Login = () => {
 
   const router = useRouter();
 
-
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     // console.log(name, email, password, secret);
     try {
-      const { data } = await axios.post(
-        `/login`,
-        {
-          email,
-          password,
-        }
-      );
-      if(data.error) {
+      const { data } = await axios.post(`/login`, {
+        email,
+        password,
+      });
+      if (data.error) {
         toast.error(data.error);
         setLoading(false);
       } else {
         // update context
-      setState({
-        user: data.user,
-        token: data.token,
-      });
-      // save in local storage
-      window.localStorage.setItem("auth", JSON.stringify(data));
-      router.push("/");
-      setEmail("");
-      setPassword("");
-      setLoading(false);
+        setState({
+          user: data.user,
+          token: data.token,
+        });
+        // save in local storage
+        window.localStorage.setItem("auth", JSON.stringify(data));
+        router.push("/user/dashboard");
+        setEmail("");
+        setPassword("");
+        setLoading(false);
       }
-      
     } catch (err) {
       toast.error(err.response.data);
       setLoading(false);
@@ -54,7 +48,7 @@ const Login = () => {
     //
   };
 
-  if(state && state.token) router.push('/');
+  if (state && state.token) router.push("/");
 
   return (
     <div className="container-fluid">
