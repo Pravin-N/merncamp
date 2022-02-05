@@ -8,6 +8,8 @@ import { toast } from "react-toastify";
 import PostList from "../../components/cards/PostList";
 import People from "../../components/cards/People";
 import Link from "next/link";
+import { Modal } from "antd";
+import CommentForm from "../../components/forms/CommentForm";
 
 const Home = () => {
   // this will give you access to the global state set in UserContext.
@@ -23,6 +25,11 @@ const Home = () => {
 
   // people state
   const [people, setPeople] = useState([]);
+
+  // comments
+  const [comment, setComment] = useState("");
+  const [visible, setVisible] = useState(false);
+  const [currentPost, setCurrentPost] = useState({});
 
   // router
   const router = useRouter();
@@ -152,6 +159,31 @@ const Home = () => {
     }
   };
 
+  const handleComment = (post) => {
+    setCurrentPost(post);
+    setVisible(true);
+  };
+
+  const addComment = async (e) => {
+    e.preventDefault();
+    // console.log("add comment to this post id", currentPost._id);
+    // console.log("Save comment to db", comment);
+    try {
+      const { data } = await axios.put("/add-comment", {
+        postId: currentPost._id,
+        comment,
+      });
+      console.log("add comment", data);
+      setComment("");
+      setVisible(false);
+      newsFeed();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const removeComment = async () => {};
+
   return (
     <UserRoute>
       <div className="container-fluid">
@@ -177,6 +209,7 @@ const Home = () => {
               deleting={deleting}
               handleLike={handleLike}
               handleUnlike={handleUnlike}
+              handleComment={handleComment}
             />
           </div>
           <div className="col-md-4">
@@ -188,6 +221,18 @@ const Home = () => {
             <People people={people} handleFollow={handleFollow} />
           </div>
         </div>
+        <Modal
+          visible={visible}
+          onCancel={() => setVisible(false)}
+          title="Comment"
+          footer={null}
+        >
+          <CommentForm
+            comment={comment}
+            setComment={setComment}
+            addComment={addComment}
+          />
+        </Modal>
       </div>
     </UserRoute>
   );
