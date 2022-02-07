@@ -24,6 +24,7 @@ const PostList = ({
   handleLike,
   handleUnlike,
   handleComment,
+  removeComment,
 }) => {
   const [state] = useContext(UserContext);
 
@@ -39,6 +40,7 @@ const PostList = ({
             handleLike={handleLike}
             handleUnlike={handleUnlike}
             handleComment={handleComment}
+            removeComment={removeComment}
             key={post._id}
           />
         ))}
