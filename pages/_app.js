@@ -11,6 +11,7 @@ function MyApp({ Component, pageProps }) {
     <UserProvider>
       <Head>
         <link rel="stylesheet" href="/css/styles.css" />
+        <link rel="shortcut icon" href="/images/logo.png"></link>
       </Head>
       <Nav />
       <ToastContainer position="top-center" />

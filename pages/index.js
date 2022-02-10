@@ -52,6 +52,7 @@ const Home = ({ posts }) => {
           property="og:image:secure_url"
           content="http://devsocial.com/images/newyork.jpg"
         />
+        <link rel="shortcut icon" href="/images/logo.png"></link>
       </Head>
     );
   };
