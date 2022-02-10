@@ -28,7 +28,7 @@ const Nav = () => {
         <a
           className={`nav-link text-light logo ${current === "/" && "active"}`}
         >
-          <Avatar src="/images/logo.png" /> MERNCAMP
+          <Avatar src="/images/logo.png" /> DEVSOCIAL
         </a>
       </Link>
 

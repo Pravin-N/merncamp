@@ -1,4 +1,4 @@
-const ParallaxBG = ({ url, children = "MERNCAMP" }) => {
+const ParallaxBG = ({ url, children = "DEVSOCIAL" }) => {
   return (
     <div
       className="container-fluid "

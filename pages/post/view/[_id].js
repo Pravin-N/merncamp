@@ -7,16 +7,16 @@ const SinglePost = ({ post }) => {
   const head = () => {
     return (
       <Head>
-        <title>MERNCAMP - A social network by dev for devs</title>
+        <title>DEVSOCIAL - A social network by dev for devs</title>
         <meta name="description" content={post.content} />
         <meta
           property="og:description"
           content="A social network by developers for other web developers"
         />
-        <meta property="og:site_name" content="MERNCAMP" />
+        <meta property="og:site_name" content="DEVSOCIAL" />
         <meta
           property="og:url"
-          content={`https://merncamp.com/post/view/${post._id}`}
+          content={`https://DEVSOCIAL.com/post/view/${post._id}`}
         />
         <meta property="og:image:secure_url" content={imageSource(post)} />
       </Head>

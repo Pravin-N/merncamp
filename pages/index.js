@@ -37,7 +37,7 @@ const Home = ({ posts }) => {
   const head = () => {
     return (
       <Head>
-        <title>MERNCAMP - A social network by dev for devs</title>
+        <title>DEVSOCIAL - A social network by dev for devs</title>
         <meta
           name="description"
           content="A social network by developers for other web developers"
@@ -46,11 +46,11 @@ const Home = ({ posts }) => {
           property="og:description"
           content="A social network by developers for other web developers"
         />
-        <meta property="og:site_name" content="MERNCAMP" />
-        <meta property="og:url" content="https://merncamp.com" />
+        <meta property="og:site_name" content="DEVSOCIAL" />
+        <meta property="og:url" content="https://devsocial.com" />
         <meta
           property="og:image:secure_url"
-          content="http://merncamp.com/images/newyork.jpg"
+          content="http://devsocial.com/images/newyork.jpg"
         />
       </Head>
     );
