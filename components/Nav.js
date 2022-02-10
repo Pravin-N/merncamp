@@ -77,6 +77,19 @@ const Nav = () => {
                   </a>
                 </Link>
               </li>
+              {state.user.role === "Admin" && (
+                <li>
+                  <Link href="/admin">
+                    <a
+                      className={`nav-link dropdown-item ${
+                        current === "/admin" && "active"
+                      }`}
+                    >
+                      Admin
+                    </a>
+                  </Link>
+                </li>
+              )}
               <li>
                 <Link href="/user/dashboard">
                   <a

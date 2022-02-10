@@ -1,14 +1,34 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../context";
 import ParallaxBG from "../components/cards/ParallaxBG";
 import axios from "axios";
 import PostPublic from "../components/cards/PostPublic";
 import Head from "next/head";
 import Link from "next/link";
+import io from "socket.io-client";
+
+const socket = io(process.env.NEXT_PUBLIC_SOCKETIO, {
+  reconnection: true,
+});
 
 const Home = ({ posts }) => {
   // this will give you access to the global state set in UserContext.
   const [state, setState] = useContext(UserContext);
+  const [newsFeed, setNewsFeed] = useState([]);
+
+  // useEffect(() => {
+  //   // console.log("SOCKETIO ON JOIN", socket);
+  //   socket.on("receive-message", (newMessage) => {
+  //     alert(newMessage);
+  //   });
+  // }, []);
+
+  useEffect(() => {
+    // console.log("SOCKETIO ON JOIN", socket);
+    socket.on("new-post", (newPost) => {
+      setNewsFeed([newPost, ...posts]);
+    });
+  }, []);
 
   const head = () => {
     return (
@@ -32,20 +52,31 @@ const Home = ({ posts }) => {
     );
   };
 
+  const collection = newsFeed.length > 0 ? newsFeed : posts;
+
   return (
     <>
       {head()}
       <ParallaxBG url="/images/newyork.jpg" />
-      <div className="row pt-5 px-5">
-        {posts.map((post) => (
-          <div className="col-md-4">
-            <Link href={`/post/view/${post._id}`}>
-              <a>
-                <PostPublic key={post._id} post={post} />
-              </a>
-            </Link>
-          </div>
-        ))}
+      <div className="container">
+        {/* <button
+          onClick={() => {
+            socket.emit("send-message", "this is ryan!!");
+          }}
+        >
+          Send message
+        </button> */}
+        <div className="row pt-5">
+          {collection.map((post) => (
+            <div key={post._id} className="col-md-4">
+              <Link href={`/post/view/${post._id}`}>
+                <a>
+                  <PostPublic key={post._id} post={post} />
+                </a>
+              </Link>
+            </div>
+          ))}
+        </div>
       </div>
       {/* Social Network</ParallaxBG> */}
     </>
