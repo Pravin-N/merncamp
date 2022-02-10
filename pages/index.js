@@ -7,9 +7,13 @@ import Head from "next/head";
 import Link from "next/link";
 import io from "socket.io-client";
 
-const socket = io(process.env.NEXT_PUBLIC_SOCKETIO, {
-  reconnection: true,
-});
+const socket = io(
+  process.env.NEXT_PUBLIC_SOCKETIO,
+  { path: "/socket.io" },
+  {
+    reconnection: true,
+  }
+);
 
 const Home = ({ posts }) => {
   // this will give you access to the global state set in UserContext.
