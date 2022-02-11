@@ -72,15 +72,16 @@ const Home = ({ posts }) => {
           Send message
         </button> */}
         <div className="row pt-5">
-          {collection.map((post) => (
-            <div key={post._id} className="col-md-4">
-              <Link href={`/post/view/${post._id}`}>
-                <a>
-                  <PostPublic key={post._id} post={post} />
-                </a>
-              </Link>
-            </div>
-          ))}
+          {collection &&
+            collection.map((post) => (
+              <div key={post._id} className="col-md-4">
+                <Link href={`/post/view/${post._id}`}>
+                  <a>
+                    <PostPublic key={post._id} post={post} />
+                  </a>
+                </Link>
+              </div>
+            ))}
         </div>
       </div>
       {/* Social Network</ParallaxBG> */}
